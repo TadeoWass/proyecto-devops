@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 on: [push]
 
@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t docker.io/tadeowassner/proyecto-devops:latest .
+          docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
 
       - name: Login to Docker Hub
         env:
@@ -33,4 +33,4 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u ${{ env.DOCKER_ID }} --password-stdin
 
       - name: Push Docker image
-        run: docker push docker.io/tadeowassner/proyecto-devops:latest
+        run: docker push docker.io/tadeowassner/devops:latest
