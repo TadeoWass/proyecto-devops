@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app  # Opcional: Para asegurarte de que los cambios en la aplicación local se reflejen en el contenedor.
+    stdin_open: true
+    tty: true
