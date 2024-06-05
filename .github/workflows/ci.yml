@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: ci
 
 on: [push]
 
@@ -19,17 +19,5 @@ jobs:
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
 
       - name: Run unit tests
-        run: python run_tests.py
+        run: python -m unittest discover tests
 
-      - name: Build Docker image
-        run: docker build -t my-python-app:latest .
-
-      - name: Login to Docker Hub
-        env:
-          DOCKER_ID: ${{ secrets.DOCKER_ID }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_ID --password-stdin
-
-      - name: Push Docker image
-        run: docker push my-python-app:latest
