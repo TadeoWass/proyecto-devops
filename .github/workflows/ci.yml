@@ -1,6 +1,6 @@
-name: CI
+name: CI 
 
-on: [push]
+on: push
 
 jobs:
   build-and-test:
@@ -34,3 +34,4 @@ jobs:
 
       - name: Push Docker image
         run: docker push docker.io/tadeowassner/devops:latest
+
