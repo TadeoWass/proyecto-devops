@@ -11,6 +11,4 @@ def hello_world():
     return "Hola Mundo"
 
 if __name__ == "__main__":
-    # Iniciar la aplicación con New Relic
-    newrelic.agent.start_application()
     app.run(host='0.0.0.0', port=5000)
