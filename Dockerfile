@@ -2,11 +2,11 @@ FROM python:3.8-slim
 
 WORKDIR /app
 
-COPY proyecto-devops/requirements.txt .
+COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY proyecto-devops/newrelic.ini /app/newrelic.ini
-COPY proyecto-devops/. .
+COPY newrelic.ini /app/newrelic.ini
+COPY app.py /app/app.py
 
-CMD ["newrelic-admin", "run-program", "python", "proyecto-devops/app.py"]
+CMD ["newrelic-admin", "run-program", "python", "/app/app.py"]
