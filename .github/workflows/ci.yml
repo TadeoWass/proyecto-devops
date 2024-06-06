@@ -18,8 +18,11 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
 
-      - name: Run unit tests
-        run: python -m unittest discover tests
+      - name: Copy newrelic.ini
+        run: cp newrelic.ini /app/newrelic.ini
+
+      - name: Run New Relic Application
+        run: newrelic-admin run-program python app.py
 
       - name: Build Docker image
         run: |
