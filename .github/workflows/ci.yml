@@ -11,10 +11,6 @@ jobs:
         uses: actions/checkout@v2
         # Clona el código del repositorio en el entorno de ejecución de GitHub Actions
 
-      - name: List files in the root directory
-        run: ls -la proyecto-devops
-        # Lista los archivos en el directorio 'proyecto-devops' para verificar la estructura del repositorio
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
