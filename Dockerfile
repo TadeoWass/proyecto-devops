@@ -6,7 +6,9 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install newrelic
+COPY newrelic.ini /app/newrelic.ini 
+
+RUN pip install newrelic  # Instalar New Relic directamente
 
 COPY . .
 
