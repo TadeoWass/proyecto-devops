@@ -25,10 +25,6 @@ jobs:
         run: python -m unittest discover tests
         # Ejecuta las pruebas unitarias
 
-      - name: Copy newrelic.ini to the app directory
-        run: cp newrelic.ini /app/newrelic.ini
-        # Copia el archivo newrelic.ini al directorio donde se encuentra Dockerfile
-
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
         # Construye la imagen Docker usando el Dockerfile del proyecto en el directorio actual
@@ -43,3 +39,4 @@ jobs:
       - name: Push Docker image
         run: docker push docker.io/tadeowassner/devops:latest
         # Empuja la imagen Docker a Docker Hub
+
