@@ -3,7 +3,7 @@ from flask import Flask
 
 
 # Configuración de New Relic
-newrelic.agent.initialize('proyecto-devops/newrelic.ini')
+newrelic.agent.initialize('newrelic.ini')
 
 app = Flask(__name__)
 
