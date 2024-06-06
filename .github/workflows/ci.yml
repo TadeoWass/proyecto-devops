@@ -16,10 +16,10 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+        run: python -m pip install --upgrade pip && pip install -r proyecto-devops/requirements.txt
 
       - name: Copy newrelic.ini to the app directory
-        run: cp newrelic.ini /app/newrelic.ini
+        run: cp proyecto-devops/newrelic.ini /app/newrelic.ini
 
       - name: Build Docker image
         run: |
