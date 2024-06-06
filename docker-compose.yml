@@ -6,6 +6,6 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - .:/app  # Opcional: Para asegurarte de que los cambios en la aplicación local se reflejen en el contenedor.
+      - .:/app  
     stdin_open: true
     tty: true
