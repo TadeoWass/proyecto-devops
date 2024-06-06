@@ -18,8 +18,8 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
 
-      - name: Copy all files to the app directory
-        run: cp -r . /app
+      - name: Copy newrelic.ini to the app directory
+        run: cp newrelic.ini /app/newrelic.ini
 
       - name: Run unit tests
         run: python -m unittest discover tests
