@@ -9,34 +9,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        # Clona el código del repositorio en el entorno de ejecución de GitHub Actions
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-        # Configura la versión de Python a usar
 
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
-        # Instala las dependencias de Python listadas en 'requirements.txt'
+
+      - name: Copy all files to the app directory
+        run: cp -r . /app
 
       - name: Run unit tests
         run: python -m unittest discover tests
-        # Ejecuta las pruebas unitarias
 
       - name: Build Docker image
-        run: docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
-        # Construye la imagen Docker usando el Dockerfile del proyecto en el directorio actual
+        run: |
+          docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
 
       - name: Login to Docker Hub
         env:
           DOCKER_ID: ${{ secrets.DOCKER_ID }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo $DOCKER_PASSWORD | docker login -u ${{ secrets.DOCKER_ID }} --password-stdin
-        # Autentica con Docker Hub usando las credenciales almacenadas en los secretos de GitHub
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u ${{ env.DOCKER_ID }} --password-stdin
 
       - name: Push Docker image
         run: docker push docker.io/tadeowassner/devops:latest
-        # Empuja la imagen Docker a Docker Hub
 
