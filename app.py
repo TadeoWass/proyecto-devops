@@ -1,6 +1,7 @@
 import newrelic.agent
 from flask import Flask
 
+
 # Configuración de New Relic
 newrelic.agent.initialize('proyecto-devops/newrelic.ini')
 
