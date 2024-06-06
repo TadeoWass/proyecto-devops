@@ -19,19 +19,19 @@ jobs:
 
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
-        # Instala las dependencias de Python listadas en 'proyecto-devops/requirements.txt'
+        # Instala las dependencias de Python listadas en 'requirements.txt'
 
       - name: Run unit tests
         run: python -m unittest discover tests
         # Ejecuta las pruebas unitarias
 
       - name: Copy newrelic.ini to the app directory
-        run: cp newrelic.ini proyecto-devops/newrelic.ini
-        # Copia el archivo newrelic.ini al directorio de construcción de Docker
+        run: cp newrelic.ini /app/newrelic.ini
+        # Copia el archivo newrelic.ini al directorio donde se encuentra Dockerfile
 
       - name: Build Docker image
-        run: docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest proyecto-devops
-        # Construye la imagen Docker usando el Dockerfile del proyecto, especificando el contexto de construcción 'proyecto-devops'
+        run: docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
+        # Construye la imagen Docker usando el Dockerfile del proyecto en el directorio actual
 
       - name: Login to Docker Hub
         env:
