@@ -16,17 +16,17 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+        run: python -m pip install --upgrade pip && pip install -r proyecto-devops/requirements.txt
 
       - name: Copy newrelic.ini
-        run: cp newrelic.ini /app/newrelic.ini
-
-      - name: Run New Relic Application
-        run: newrelic-admin run-program python app.py
+        run: cp proyecto-devops/newrelic.ini /app/newrelic.ini
 
       - name: Build Docker image
         run: |
           docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest .
+
+      - name: Run New Relic Application
+        run: newrelic-admin run-program python proyecto-devops/app.py
 
       - name: Login to Docker Hub
         env:
