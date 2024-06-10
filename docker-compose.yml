@@ -6,6 +6,6 @@ services:
     ports:
       - "5000:5000"
     environment:
-      NEW_RELIC_CONFIG_FILE: /app/newrelic.ini
+      NEW_RELIC_CONFIG_FILE: newrelic.ini
     volumes:
       - .:/app
