@@ -7,8 +7,8 @@ application = newrelic.agent.register_application(timeout=10)
 
 app = Flask(__name__)
 
-@newrelic.agent.background_task(application=application, name='hello-world', group='Task')
 @app.route('/')
+@newrelic.agent.background_task(application=application, name='hello-world', group='Task')
 def hello_world():
     return "Hola Mundo"
 
