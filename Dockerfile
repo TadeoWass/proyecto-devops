@@ -18,4 +18,4 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-CMD ["newrelic-admin", "run-program", "python", "app.py"]
+CMD ["python", "app.py"]
