@@ -9,4 +9,4 @@ services:
       NEW_RELIC_CONFIG_FILE: newrelic.ini
     volumes:
       - .:/app
-    command: ["python", "app.py"]
+    command: ["newrelic-admin", "run-program", "python", "app.py"]
