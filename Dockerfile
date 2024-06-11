@@ -18,6 +18,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-RUN pip install newrelic 
+RUN pip install flask newrelic
 
 CMD ["newrelic-admin", "run-program", "python", "app.py"]
