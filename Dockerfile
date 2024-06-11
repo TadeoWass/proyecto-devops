@@ -18,4 +18,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
+RUN pip install newrelic 
+
 CMD ["newrelic-admin", "run-program", "python", "app.py"]
