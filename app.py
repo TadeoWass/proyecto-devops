@@ -1,16 +1,13 @@
 import newrelic.agent
 from flask import Flask
 
-
 # Configuración de New Relic
 newrelic.agent.initialize('newrelic.ini')
-
-@newrelic.agent.background_task(name='database-update', group='Task')
-def database_update():
-    ...
+application = newrelic.agent.register_application(timeout=10)
 
 app = Flask(__name__)
 
+@newrelic.agent.background_task(application=application, name='hello-world', group='Task')
 @app.route('/')
 def hello_world():
     return "Hola Mundo"
