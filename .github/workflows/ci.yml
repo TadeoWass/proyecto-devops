@@ -29,6 +29,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config pull.rebase false  # merge (puede cambiarse a true para rebase)
           git checkout -b new-branch
           git pull origin new-branch || true  # Ignorar error si la rama no existe en remoto
           git push origin new-branch
@@ -83,6 +84,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config pull.rebase false  # merge (puede cambiarse a true para rebase)
           git checkout main
           git pull origin main
-          git merge new-bra
+          git merge new-branch
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
