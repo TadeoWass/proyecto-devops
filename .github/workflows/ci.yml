@@ -1,13 +1,10 @@
-name: CI
+name: CI/CD
 
 on:
   pull_request:
     branches: [ main ]
   push:
     branches: [ main ]
-
-permissions:
-  contents: write  # Otorga permisos de escritura al `GITHUB_TOKEN`
 
 jobs:
   build-and-test:
@@ -23,45 +20,19 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -r requirements.txt
-
-      - name: Create and push a new branch
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config pull.rebase false  # merge (puede cambiarse a true para rebase)
-          git checkout -b new-branch
-          git pull origin new-branch || true  # Ignorar error si la rama no existe en remoto
-          git push origin new-branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to Docker Hub
-        env:
-          DOCKER_ID: ${{ secrets.DOCKER_ID }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_ID --password-stdin
-
-      - name: Build and run Docker Compose
+      - name: Run unit tests
         run: |
-          docker-compose up --build -d
-        env:
-          NEW_RELIC_CONFIG_FILE: newrelic.ini
-
-      - name: Wait for the service to be ready
-        run: |
-          timeout 60 sh -c 'until curl -sSf http://localhost:5000; do sleep 5; done'
-
-      - name: Run tests
-        run: python -m unittest discover tests
+          python -m unittest discover tests
+        continue-on-error: false
 
   push-image:
     runs-on: ubuntu-latest
     needs: build-and-test
-    if: github.ref == 'refs/heads/new-branch'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -80,15 +51,28 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest --push .
 
-      - name: Merge new-branch to main
+  deploy-to-main:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, push-image]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH for GitHub Actions
+        uses: webfactory/ssh-agent@v0.5.5
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config pull.rebase false  # merge (puede cambiarse a true para rebase)
-          git checkout main
-          git pull origin main
-          git merge new-branch
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Merge changes to main
+        run: |
+          git fetch origin main
+          git checkout main
+          git merge --ff-only ${{ github.sha }}
+          git push origin main
