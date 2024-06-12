@@ -57,7 +57,7 @@ jobs:
           timeout 60 sh -c 'until curl -sSf http://localhost:5000; do sleep 5; done'
 
       - name: Run integration tests
-        run: python -m unittest discover tests/integration
+        run: python -m unittest discover tests
 
   push-image:
     runs-on: ubuntu-latest
