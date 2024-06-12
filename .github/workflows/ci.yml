@@ -1,8 +1,10 @@
-name: CI/CD Workflow
+name: CI
 
 on:
+  pull_request:
+    branches: [ main ]
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -26,6 +28,7 @@ jobs:
   push-image:
     runs-on: ubuntu-latest
     needs: build-and-test
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout code
@@ -42,4 +45,4 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker buildx build --platform linux/amd64 -t docker.io/yourusername/proyecto-devops:latest --push .
+          docker buildx build --platform linux/amd64 -t docker.io/tadeowassner/devops:latest --push .
