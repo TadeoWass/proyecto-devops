@@ -7,6 +7,20 @@ services:
       - "5000:5000"
     environment:
       NEW_RELIC_CONFIG_FILE: newrelic.ini
-    volumes:
-      - .:/app
     command: ["newrelic-admin", "run-program", "python", "app.py"]
+  
+  app-endpoint-500:
+    image: python:3.8-slim
+    environment:
+      NEW_RELIC_CONFIG_FILE: /app/newrelic.ini
+    command: ["newrelic-admin", "run-program", "python", "error500.py"]
+    ports:
+      - "5001:5000"
+
+  app-endpoint-400:
+    image: python:3.8-slim
+    environment:
+      NEW_RELIC_CONFIG_FILE: /app/newrelic.ini
+    command: ["newrelic-admin", "run-program", "python", "error400.py"]
+    ports:
+      - "5002:5000"

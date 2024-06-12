@@ -12,5 +12,13 @@ app = Flask(__name__)
 def hello_world():
     return "Hola Mundo"
 
+@app.route('/')
+def error500():
+    return "Internal Server Error", 500
+
+@app.route('/')
+def error400():
+    return "Bad Request", 400
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
